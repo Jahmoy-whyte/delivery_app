@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "362564033454",
+    "project_id": "fir-learning-efa3c",
+    "storage_bucket": "fir-learning-efa3c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362564033454:android:d20229b5c55f12793cc63f",
+        "android_client_info": {
+          "package_name": "com.johnwata.appnotify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362564033454-jsc4cn1a1hjg5pq4n17tqv8k2ufgu4is.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7Vvzt_PIy8A1VyyqRYe-UP9YuWbG33tc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "362564033454-jsc4cn1a1hjg5pq4n17tqv8k2ufgu4is.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

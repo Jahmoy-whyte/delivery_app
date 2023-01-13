@@ -1,0 +1,44 @@
+
+{
+  
+  "expo": {
+    "name": "delivery_app",
+    "slug": "delivery_app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/appicon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F47A00"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.johnwata.appnotify"
+
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0e94c594-2ac9-429f-9400-609c288e2dc4"
+      }
+    }
+  }
+}
+      
