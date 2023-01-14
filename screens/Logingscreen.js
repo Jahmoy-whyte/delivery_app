@@ -67,7 +67,6 @@ const fn_signin = async() => {
             if (user.emailVerified){
           
               setprocessing(false)
-              
               setuserscreenstate("loggedin")
 
                }else{

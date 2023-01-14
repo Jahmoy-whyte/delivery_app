@@ -1,6 +1,4 @@
-
 {
-  
   "expo": {
     "name": "delivery_app",
     "slug": "delivery_app",
@@ -20,7 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.johnwata.appnotify"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -29,7 +28,6 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.johnwata.appnotify"
-
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -41,4 +39,3 @@
     }
   }
 }
-      

@@ -1,7 +1,7 @@
 import { StyleSheet, View ,TouchableOpacity,Text,Image} from 'react-native';
 import { Entypo, Feather, AntDesign} from '@expo/vector-icons';
 import {memo} from 'react';
-//import { MotiView , AnimatePresence,MotiScrollView} from 'moti'
+
 const MenuCarditems = (
     {
         dname,

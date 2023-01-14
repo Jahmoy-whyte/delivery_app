@@ -1,6 +1,5 @@
 import { StyleSheet, View ,Text, Image ,TouchableOpacity} from 'react-native';
 import { Userinfo_Context,Cartinfo_Context ,Userstate_Context } from '../GlobalContext/Context';
-//import { MotiView , AnimatePresence,MotiScrollView} from 'moti'
 import React, { useContext } from 'react';
 
 

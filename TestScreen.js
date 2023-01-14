@@ -3,7 +3,7 @@ import {Button, Alert, Modal, StyleSheet, BackHandler, Text, Pressable, View } f
 import BottomSheet,{BottomSheetView , BottomSheetScrollView} from '@gorhom/bottom-sheet';
 
 import { GestureHandlerRootView  } from 'react-native-gesture-handler';
-
+z
 
 
 

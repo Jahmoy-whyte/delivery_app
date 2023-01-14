@@ -1,7 +1,7 @@
 import { StyleSheet, View ,TouchableOpacity,Text} from 'react-native';
 import {  Ionicons } from '@expo/vector-icons';
 import {memo} from 'react';
-//import { MotiView , AnimatePresence,MotiScrollView} from 'moti'
+
 
 
 const Header = ({title ,nav,disable}) => {

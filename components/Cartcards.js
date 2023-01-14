@@ -1,7 +1,7 @@
 import { StyleSheet, View ,TouchableOpacity,Text,Image,ActivityIndicator} from 'react-native';
 import { MaterialIcons} from '@expo/vector-icons';
 import  {memo, useState, useMemo} from 'react';
-import { MotiView} from 'moti'
+
 
 
 const Cartcards = (
@@ -54,25 +54,7 @@ const Cartcards = (
 
         console.log("cart cards render")
           return(
-            <MotiView
-        
-            from={{
-               opacity: 0, 
-               translateY:100,
-               //backgroundColor:"red"
-             }}
-             animate={{
-               opacity: 1, 
-               translateY:0,
-             //  backgroundColor:"green"
-             }}
-         
-        
-            transition ={{
-              //delay: num > 0 ? 100 * num:100  
-            //  ,
-          //  type:"timing"
-            }}>
+          
               <View  style = {styles.barcontainer} >
         
 
@@ -125,7 +107,7 @@ const Cartcards = (
 
              
               </View>
-        </MotiView>
+ 
         
           )
         }

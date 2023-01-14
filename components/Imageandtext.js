@@ -1,6 +1,6 @@
 import { StyleSheet, View ,Text, Image} from 'react-native';
 
-//import { MotiView , AnimatePresence,MotiScrollView} from 'moti'
+
 
 
 const Imageandtext = ({title ,image}) => {

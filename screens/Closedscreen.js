@@ -1,7 +1,7 @@
 import { StyleSheet, View ,Text, Image , ActivityIndicator, ScrollView, Modal,TouchableOpacity} from 'react-native';
 import React,{ useState} from 'react';
 import { StatusBar as Expostatusbar } from 'expo-status-bar';
-//import { MotiView , AnimatePresence,MotiScrollView} from 'moti'
+
 import Alertmessage from '../helpers/Alertmessage';
 import { doc, getDoc } from "firebase/firestore";
 import { async } from '@firebase/util';
