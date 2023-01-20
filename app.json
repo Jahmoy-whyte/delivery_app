@@ -4,10 +4,10 @@
     "slug": "delivery_app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/appicon1.png",
+    "icon": "./assets/appicon3.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/appsplashscreen.png",
+      "image": "./assets/splashscreen2.png",
       "resizeMode": "contain",
       "backgroundColor": "#F47A00"
     },
@@ -24,7 +24,7 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/appicon1.png",
+        "foregroundImage": "./assets/appicon3.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.johnwata.appnotify"
