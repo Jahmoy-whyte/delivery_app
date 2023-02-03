@@ -8,7 +8,12 @@ import {
   Text,
   ScrollView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialIcons,
+  Feather,
+  SimpleLineIcons,
+} from "@expo/vector-icons";
 import { StatusBar as Expostatusbar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import Loadingscreen from "../components/Loadingscreen";
@@ -61,44 +66,6 @@ const Checkoutscreen = ({ navigation }) => {
   }
   // ================= Guest =====================
 
-  if (checkoutoption === "delivery") {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Expostatusbar style="dark" />
-
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backnavicon}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons name="chevron-back" size={20} color="black" />
-          </TouchableOpacity>
-
-          <Text style={styles.headertxt}>Checkout</Text>
-        </View>
-        <View style={styles.options}>
-          <TouchableOpacity
-            style={styles.delivery}
-            onPress={() => setcheckoutoption("pickup")}
-          >
-            <Text style={styles.deliverytxt}>Pickup</Text>
-          </TouchableOpacity>
-          <View style={{ width: 10 }}></View>
-          <TouchableOpacity
-            style={styles.pickup}
-            onPress={() => setcheckoutoption("delivery")}
-          >
-            <Text style={styles.pickuptxt}>Delivery</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.temptext}>
-          <Text style={{ fontSize: 20 }}> Comming Soon</Text>
-        </View>
-      </SafeAreaView>
-    );
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       <Expostatusbar style="dark" />
@@ -110,81 +77,124 @@ const Checkoutscreen = ({ navigation }) => {
         >
           <Ionicons name="chevron-back" size={20} color="black" />
         </TouchableOpacity>
+
         <Text style={styles.headertxt}>Checkout</Text>
       </View>
 
       <View style={styles.options}>
         <TouchableOpacity
-          style={styles.pickup}
+          style={[
+            styles.pickup,
+            checkoutoption === "pickup"
+              ? {
+                  backgroundColor: "#F99B3D",
+                  borderTopLeftRadius: 6,
+                  borderBottomLeftRadius: 6,
+                }
+              : { backgroundColor: "#F47A00", borderRadius: 6 },
+          ]}
           onPress={() => setcheckoutoption("pickup")}
         >
-          <Text style={styles.pickuptxt}>Pickup</Text>
+          <View style={styles.optionshold}>
+            <SimpleLineIcons
+              style={styles.icon}
+              name="bag"
+              size={24}
+              color="white"
+            />
+            <Text style={styles.optionstxt}>Pickup</Text>
+          </View>
         </TouchableOpacity>
-        <View style={{ width: 10 }}></View>
+
         <TouchableOpacity
-          style={styles.delivery}
+          style={[
+            styles.delivery,
+            checkoutoption === "delivery"
+              ? {
+                  backgroundColor: "#F99B3D",
+                  borderTopRightRadius: 6,
+                  borderBottomRightRadius: 6,
+                }
+              : { backgroundColor: "#F47A00", borderRadius: 6 },
+          ]}
           onPress={() => setcheckoutoption("delivery")}
         >
-          <Text style={styles.deliverytxt}>Delivery</Text>
+          <View style={styles.optionshold}>
+            <MaterialIcons
+              name="directions-bike"
+              style={styles.icon}
+              size={24}
+              color={"white"}
+            />
+            <Text style={styles.optionstxt}>Delivery</Text>
+          </View>
         </TouchableOpacity>
       </View>
 
-      <ScrollView>
-        <View style={styles.alltxthold}>
-          <Text style={styles.title}>Information</Text>
-          <Text style={styles.subtitle}>
-            Your Information Can Be Changed In The Accout Tab.
-          </Text>
+      {checkoutoption === "delivery" ? (
+        <View style={styles.temptext}>
+          <Text style={{ fontSize: 20 }}> Comming Soon</Text>
         </View>
-
-        <View style={styles.alltxthold1}>
-          <Text style={styles.title}>Contact Info</Text>
-
-          <Text style={styles.subtitle}>Name:</Text>
-          <View style={styles.contactinfo}>
-            <Text style={styles.textboxtxt}>
-              {userinfo.fname + " " + userinfo.lname}
+      ) : (
+        <ScrollView>
+          <View style={styles.alltxthold}>
+            <Text style={styles.title}>Information</Text>
+            <Text style={styles.subtitle}>
+              Your Information Can Be Changed In The Accout Tab.
             </Text>
           </View>
 
-          <Text style={styles.subtitle}>Phone:</Text>
+          <View style={styles.alltxthold1}>
+            <Text style={styles.title}>Contact Info</Text>
 
-          <View style={styles.contactinfo}>
-            <Text style={styles.textboxtxt}>{userinfo.phone}</Text>
-          </View>
-        </View>
-        <View style={styles.totalhold}>
-          <View style={styles.totalline}>
-            <Text style={styles.righttxt}>SubTotal:</Text>
-            <Text style={styles.lefttxt}>${totalcalculation}</Text>
-          </View>
+            <Text style={styles.subtitle}>Name:</Text>
+            <View style={styles.contactinfo}>
+              <Text style={styles.textboxtxt}>
+                {userinfo.fname + " " + userinfo.lname}
+              </Text>
+            </View>
 
-          <View style={styles.totalline}>
-            <Text style={styles.righttxt}>Tax:</Text>
-            <Text style={styles.lefttxt}>$0</Text>
-          </View>
+            <Text style={styles.subtitle}>Phone:</Text>
 
-          <View style={styles.totalline}>
-            <Text style={styles.righttxt}>Total</Text>
-            <Text style={styles.righttxt}>${totalcalculation}</Text>
+            <View style={styles.contactinfo}>
+              <Text style={styles.textboxtxt}>{userinfo.phone}</Text>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+          <View style={styles.totalhold}>
+            <View style={styles.totalline}>
+              <Text style={styles.righttxt}>SubTotal:</Text>
+              <Text style={styles.lefttxt}>${totalcalculation}</Text>
+            </View>
 
-      <TouchableOpacity
-        style={styles.bottombarcontainer}
-        onPress={() => {
-          navigation.navigate("payment", {
-            ordertype: "Pickup",
-          });
-        }}
-      >
-        <View>
-          <Text style={styles.txt}>SubTotal:</Text>
-          <Text style={styles.txt}>${totalcalculation}</Text>
-        </View>
-        <Text style={styles.txt}>Next</Text>
-      </TouchableOpacity>
+            <View style={styles.totalline}>
+              <Text style={styles.righttxt}>Tax:</Text>
+              <Text style={styles.lefttxt}>$0</Text>
+            </View>
+
+            <View style={styles.totalline}>
+              <Text style={styles.righttxt}>Total</Text>
+              <Text style={styles.righttxt}>${totalcalculation}</Text>
+            </View>
+          </View>
+        </ScrollView>
+      )}
+
+      {checkoutoption === "pickup" ? (
+        <TouchableOpacity
+          style={styles.bottombarcontainer}
+          onPress={() => {
+            navigation.navigate("payment", {
+              ordertype: "Pickup",
+            });
+          }}
+        >
+          <View>
+            <Text style={styles.txt}>SubTotal:</Text>
+            <Text style={styles.txt}>${totalcalculation}</Text>
+          </View>
+          <Text style={styles.txt}>Next</Text>
+        </TouchableOpacity>
+      ) : null}
     </SafeAreaView>
   );
 };
@@ -338,52 +348,42 @@ const styles = StyleSheet.create({
   },
 
   options: {
-    // backgroundColor:"red",
+    backgroundColor: "#F47A00",
     marginHorizontal: 10,
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    // marginVertical:4,
+    borderRadius: 6,
   },
 
   pickup: {
-    backgroundColor: "#F47A00",
-    //   height:48,
     flex: 1,
-    borderRadius: 6,
-    // marginRight: 5,
-    justifyContent: "center",
-    alignItems: "center",
   },
 
   delivery: {
-    backgroundColor: "white",
-    //   height:48,
-
-    borderColor: "#7F7F7F",
-    //borderWidth:0.5,
-
-    borderWidth: 0.5,
-
+    borderColor: "white",
+    borderLeftWidth: 1,
     flex: 1,
-    borderRadius: 6,
-    // marginLeft: 5,
-    justifyContent: "center",
-    alignItems: "center",
   },
 
-  deliverytxt: {
-    fontFamily: "Inter-Bold",
-    fontSize: 14,
-    color: "black",
-    paddingVertical: 6,
-  },
-
-  pickuptxt: {
+  optionstxt: {
     fontFamily: "Inter-Bold",
     fontSize: 14,
     color: "white",
-    paddingVertical: 6,
+  },
+  optionssubtxt: {
+    fontFamily: "Inter-Regular",
+    fontSize: 12,
+    color: "white",
+  },
+  icon: {
+    marginRight: 5,
+  },
+
+  optionshold: {
+    paddingVertical: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 5,
   },
 
   bottombarcontainer: {

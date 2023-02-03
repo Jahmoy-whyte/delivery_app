@@ -14,7 +14,12 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import { AntDesign, Ionicons, Feather } from "@expo/vector-icons";
+import {
+  AntDesign,
+  MaterialIcons,
+  Ionicons,
+  Feather,
+} from "@expo/vector-icons";
 import react, {
   useEffect,
   useState,
@@ -82,6 +87,8 @@ const Orderscreen = ({ navigation }) => {
     paytype: "",
     totaltopay: "",
     ORDERID: "",
+    ORDERSTATUS: "",
+    ORDERTIME: "",
   });
 
   const [screen, setscreen] = useState(1);
@@ -107,14 +114,14 @@ const Orderscreen = ({ navigation }) => {
 
       setorderdata((prev) => ({ ...prev, loading: false, data: arr }));
 
-      //console.log( arr)
+      // console.log(arr);
     });
 
     return unsubscribe;
   }, []);
 
   const fnshowmodelwithdata = useCallback(
-    (cartdata, paytype, totaltopay, ORDERID) => {
+    (cartdata, paytype, totaltopay, ORDERID, ORDERSTATUS, ORDERTIME) => {
       console.log("cartdata");
       setorderdata((prev) => ({
         ...prev,
@@ -123,6 +130,8 @@ const Orderscreen = ({ navigation }) => {
         paytype: paytype,
         totaltopay: totaltopay,
         ORDERID: ORDERID,
+        ORDERSTATUS: ORDERSTATUS,
+        ORDERTIME: ORDERTIME,
       }));
     },
     []
@@ -144,23 +153,74 @@ const Orderscreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.headertxt}>My Orders</Text>
       <View style={styles.options}>
-        <TouchableOpacity
-          style={screen === 1 ? styles.pickup : styles.delivery}
-          onPress={() => setscreen(1)}
-        >
-          <Text style={screen === 1 ? styles.pickuptxt : styles.deliverytxt}>
-            Current Order
-          </Text>
-        </TouchableOpacity>
-        <View style={{ width: 10 }}></View>
-        <TouchableOpacity
-          style={screen === 2 ? styles.pickup : styles.delivery}
-          onPress={() => setscreen(2)}
-        >
-          <Text style={screen === 2 ? styles.pickuptxt : styles.deliverytxt}>
-            Order Histroy
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.menuscroll}>
+          <TouchableOpacity
+            onPress={() => setscreen(1)}
+            style={[
+              styles.topmenu,
+              {
+                backgroundColor: screen === 1 ? "#F99B3D" : "#F47A00",
+                borderTopLeftRadius: 6,
+                borderBottomLeftRadius: 6,
+              },
+            ]}
+          >
+            <AntDesign
+              style={styles.iconstyle}
+              name="book"
+              size={20}
+              color="white"
+            />
+            <Text
+              style={{
+                fontSize: 12,
+                fontFamily: "Inter-Bold",
+                color: "white",
+              }}
+            >
+              Current Order
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => setscreen(2)}
+            style={[
+              styles.topmenu,
+              {
+                backgroundColor: screen === 2 ? "#F99B3D" : "#F47A00",
+                borderTopRightRadius: 6,
+                borderBottomRightRadius: 6,
+              },
+            ]}
+          >
+            <Ionicons
+              style={styles.iconstyle}
+              name="time-outline"
+              size={20}
+              color="white"
+            />
+            <View>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Inter-Bold",
+                  color: "white",
+                }}
+              >
+                Order History
+              </Text>
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontFamily: "Inter-Regular",
+                  color: "white",
+                }}
+              >
+                List of all previous orders
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {screen === 1 ? (
@@ -176,11 +236,12 @@ const Orderscreen = ({ navigation }) => {
                   return (
                     <Orderscards
                       orderid={item.Order_id}
-                      oderstatus={item.Order_status}
+                      orderstatus={item.Order_status}
                       cartarr={item.Customer_order}
                       delivreytype={item.Order_type}
                       paymenttype={item.Customer_paymentmethod}
                       fn_passdata={fnshowmodelwithdata}
+                      ordertime={item.Order_time}
                     />
                   );
                 }}
@@ -230,6 +291,16 @@ const Orderscreen = ({ navigation }) => {
             </View>
 
             <View style={styles.alltxthold}>
+              <Text style={styles.title}>Status</Text>
+              <Text style={styles.subtitle}>{orderdata.ORDERSTATUS}</Text>
+            </View>
+
+            <View style={styles.alltxthold}>
+              <Text style={styles.title}>Order Date</Text>
+              <Text style={styles.subtitle}>{orderdata.ORDERTIME}</Text>
+            </View>
+
+            <View style={styles.alltxthold}>
               <Text style={styles.title}>Order Id</Text>
               <Text style={styles.subtitle}>{orderdata.ORDERID}</Text>
             </View>
@@ -272,6 +343,28 @@ const Orderscreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  menuscroll: {
+    backgroundColor: "#F47A00",
+    justifyContent: "center",
+    flexDirection: "row",
+    borderRadius: 6,
+  },
+
+  iconstyle: {
+    marginRight: 5,
+  },
+
+  topmenu: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderLeftWidth: 0.5,
+    borderLeftColor: "white",
+    flex: 1,
+  },
+
   titletxt: {
     fontFamily: "Inter-Bold",
     fontSize: 20,

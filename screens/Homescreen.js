@@ -1,5 +1,11 @@
 import { StatusBar as Expostatusbar } from "expo-status-bar";
-import React, { useEffect, useContext, useRef } from "react";
+import React, {
+  useEffect,
+  useContext,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import {
   StyleSheet,
   Text,
@@ -19,7 +25,12 @@ import Homedishcards from "../components/Homedushcards";
 import { useFonts } from "expo-font";
 import Menucards from "../components/Menucards";
 import Loadingscreen from "../components/Loadingscreen";
-import { AntDesign, MaterialIcons, Feather } from "@expo/vector-icons";
+import {
+  AntDesign,
+  MaterialIcons,
+  Ionicons,
+  Feather,
+} from "@expo/vector-icons";
 import {
   Userinfo_Context,
   Cartinfo_Context,
@@ -32,45 +43,15 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useGetuserinfo } from "../services/Getuserinfo";
 import { useGetdishinfo } from "../services/Getdishinfo";
 import useBottomsheet_helper from "../helpers/Bottomsheet_helper";
-
+import { useGetHomemeundata } from "../services/HomeMenudata";
+import Openingtimes from "./Openingtimes";
+import Homelist from "../components/Homelist";
+import Dealsscreen from "./Dealsscreen";
 //============
 //temp data
 //============
 
 let n = 0;
-const tempfunction = () => {
-  /*
- const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-  ];
-
-*/
-  /*
-  const q =  query(collection(db, "Dishies"), where("DishType", "==", "Jamaican Dishes"),limit(8));
-  const Unsubscribe =  onSnapshot(q, (querySnapshot) => {
-  const getdish = []
-  querySnapshot.forEach((doc) => {
-    getdish.push(doc.data());
-  });
-  setdishdata(getdish)
-// alert("wdwdd")
-
-})
-
-
-*/
-};
 
 export default function Homescreen({ navigation }) {
   //============
@@ -81,17 +62,16 @@ export default function Homescreen({ navigation }) {
     "Inter-Regular": require("../assets/fonts/Inter-Regular.ttf"),
   });
 
-  const [userscreenstate, setuserscreenstate] = useContext(Userstate_Context);
   const [userinfo, setuserinfo] = useContext(Userinfo_Context);
   const [cartinfo, setcartinfo] = useContext(Cartinfo_Context);
 
-  const [dishdata1, FUNC_Incart1] = useGetdishinfo("Jamaican Dishes", 5);
-  const [dishdata2, FUNC_Incart2] = useGetdishinfo("Chinese Food", 5);
+  const [userdata_info, userdata_cart, userdata_loading] = useGetuserinfo(true);
+  const [screen, setscreen] = useState("menu");
 
-  const [userdata_info, userdata_cart, userdata_loading, metadata] =
-    useGetuserinfo(true);
+  // const [dishdata1, FUNC_Incart1] = useGetdishinfo("Jamaican Dishes", 5);
+  //const [dishdata2, FUNC_Incart2] = useGetdishinfo("Chinese Food", 5);
 
-  const scrolling = useRef();
+  //const [dishdata3, FUNC_Incart3] = useGetdishinfo("Chinese Food", 5);
 
   const [
     openbottomsheet,
@@ -111,28 +91,13 @@ export default function Homescreen({ navigation }) {
   //on load call this function
   //============
 
+  const [dishdata] = useGetHomemeundata();
+
   useEffect(() => {
     if (userdata_loading === true) return;
     setcartinfo(userdata_cart);
     setuserinfo(userdata_info);
   }, [userdata_loading]);
-
-  useEffect(() => {
-    if (
-      dishdata1.loading === true ||
-      dishdata2.loading === true ||
-      userdata_loading === true
-    )
-      return;
-    FUNC_Incart1(cartinfo);
-    FUNC_Incart2(cartinfo);
-  }, [cartinfo]);
-
-  useEffect(() => {
-    if (metadata.loading === true) return;
-    if (metadata.data.Openstatus === true) return;
-    setuserscreenstate("closed");
-  }, [metadata]);
 
   useEffect(() => {
     const backAction = () => {
@@ -151,44 +116,56 @@ export default function Homescreen({ navigation }) {
     return () => backHandler.remove();
   }, [isopen]);
 
-  const Fn_navigate = (msg, dishimg) => {
-    navigation.navigate("Menu", {
-      querytxt: msg,
-      headimage: dishimg,
-    });
-  };
+  /*
+  useEffect(() => {
+    if (
+      dishdata1.loading === true ||
+      dishdata2.loading === true ||
+      dishdata3.loading === true ||
+      userdata_loading === true
+    )
+      return;
+    FUNC_Incart1(cartinfo);
+    FUNC_Incart2(cartinfo);
+    FUNC_Incart3(cartinfo);
+  }, [cartinfo]);
+  */
 
-  const goto = () => {
-    scrolling.current.scrollTo({ x: 147, y: 0, animated: true });
-  };
+  /*
+  const Topmenu = useCallback(() => {
+    return (
+      <TouchableOpacity
+        onPress={() => setscreen("deals")}
+        style={[
+          styles.menuoptions,
+          {
+            backgroundColor: screen === "deals" ? "#F99B3D" : "#F47A00",
+            borderTopLeftRadius: 6,
+            borderBottomLeftRadius: 6,
+          },
+        ]}
+      >
+        <AntDesign
+          style={styles.iconstyle}
+          name="staro"
+          size={20}
+          color="white"
+        />
 
-  /*  <View style={styles.advertcontainer}>
-<View>
-<Text style={styles.adverttxtheading}>60% 0ff</Text>
-<Text style={styles.adverttxt} numberOfLines = {1} ellipsizeMode = 'tail'>food substance consisting ....</Text>
-</View> 
-<Image 
-    style ={styles.adverimg}
-    source={require('../assets/temppic.png')}
-    />
-</View>
+        <View>
+          <Text style={styles.topmenutitle}>{title}</Text>
+         {subtitle !=""? (
+          <Text style={styles.topmenusubtitle}>{subtitle}</Text>
+          ):null}
+        </View>
+      </TouchableOpacity>
+    );
+  }, []);
 */
-
-  //============
-  //Loading indicator
-  //============
-
   return (
     <SafeAreaView style={styles.container}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Expostatusbar style="dark" />
-
-        {/* Header 
-    pading vertical = 14
-
-    headerleft
-    pading horizontal = 10 
-    */}
 
         <View style={styles.headerbackcolor}>
           <View style={styles.header}>
@@ -242,7 +219,7 @@ export default function Homescreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        {userdata_loading === true || dishdata1.loading === true ? (
+        {userdata_loading === true || dishdata.loading === true ? (
           <Loadingscreen />
         ) : (
           <ScrollView
@@ -250,182 +227,114 @@ export default function Homescreen({ navigation }) {
             showsVerticalScrollIndicator={false}
             alwaysBounceVertical={false}
           >
-            {/* searhcontainer 
-    no margin or padding
-
-    
-
-
-
-    */}
-
-            {/* subheading 
-    left - fontSize:18,
-   right - fontSize:14,
-   padding vertial : 14
-
-
-
-
-<View style = {styles.subheading}>
-          <Text style = {styles.subtitle}>Menus</Text>
-          
-        </View> 
-
-        
-        <View style={styles.advertcontainer}>
-<View>
-<Text style={styles.adverttxtheading}>60% 0ff</Text>
-<Text style={styles.adverttxt} numberOfLines = {1} ellipsizeMode = 'tail'>food substance consisting ....</Text>
-</View> 
-<Image 
-    style ={styles.adverimg}
-    source={require('../assets/menuimg1.png')}
-    />
-</View>
-
-   
-    */}
-
-            {metadata.loading === true ? null : (
-              <View style={styles.advertcontainer}>
-                <View>
-                  <Text style={styles.adverttxtheading}>
-                    {metadata.data.Advert.Title}
-                  </Text>
-                  <Text
-                    style={styles.adverttxt}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {metadata.data.Advert.Subtitle}...
-                  </Text>
-                </View>
-                <Image
-                  style={styles.adverimg}
-                  source={{ uri: metadata.data.Advert.Image }}
-                />
-              </View>
-            )}
-
             <ScrollView
-              ref={scrolling}
               alwaysBounceHorizontal={false}
               horizontal={true}
               style={styles.menuscroll}
               showsHorizontalScrollIndicator={false}
             >
-              <TouchableOpacity style={styles.menuhold} onPress={() => goto()}>
-                <Text style={styles.menutxt}>Menus</Text>
-                <MaterialIcons
-                  name="arrow-forward-ios"
-                  size={14}
+              <TouchableOpacity
+                onPress={() => setscreen("menu")}
+                style={[
+                  styles.menuoptions,
+                  {
+                    backgroundColor: screen === "menu" ? "#F99B3D" : "#F47A00",
+                    borderTopLeftRadius: 6,
+                    borderBottomLeftRadius: 6,
+                  },
+                ]}
+              >
+                <AntDesign
+                  style={styles.iconstyle}
+                  name="book"
+                  size={20}
                   color="white"
-                  allowFontScaling={true}
                 />
+                <Text style={styles.topmenutitle}>Menu</Text>
               </TouchableOpacity>
 
-              <Menucards
-                backcolor="#F47A00"
-                qtxt="Jamaican Dishes"
-                title="Jamaican"
-                dishnumber="Dishies(20)"
-                dishimg={require("../assets/jadish.jpg")}
-                fn={Fn_navigate}
-              />
-              <Menucards
-                backcolor="#F47A00"
-                qtxt="Chinese Food"
-                title="Chinese"
-                dishnumber="Dishies(30)"
-                dishimg={require("../assets/chdish.jpg")}
-                fn={Fn_navigate}
-              />
-              <Menucards
-                backcolor="#F47A00"
-                qtxt="Sea Food"
-                title="Sea"
-                dishnumber="Dishies(10)"
-                dishimg={require("../assets/sdish.jpg")}
-                fn={Fn_navigate}
-              />
+              <TouchableOpacity
+                onPress={() => setscreen("deals")}
+                style={[
+                  styles.menuoptions,
+                  {
+                    backgroundColor: screen === "deals" ? "#F99B3D" : "#F47A00",
+                    borderTopLeftRadius: 6,
+                    borderBottomLeftRadius: 6,
+                  },
+                ]}
+              >
+                <AntDesign
+                  style={styles.iconstyle}
+                  name="staro"
+                  size={20}
+                  color="white"
+                />
+                <View>
+                  <Text style={styles.topmenutitle}>Deals</Text>
+                  <Text style={styles.topmenusubtitle}>Whats new</Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => setscreen("opening")}
+                style={[
+                  styles.menuoptions,
+                  {
+                    backgroundColor:
+                      screen === "opening" ? "#F99B3D" : "#F47A00",
+                    borderTopLeftRadius: 6,
+                    borderBottomLeftRadius: 6,
+                  },
+                ]}
+              >
+                <Ionicons
+                  style={styles.iconstyle}
+                  name="time-outline"
+                  size={20}
+                  color="white"
+                />
+                <View>
+                  <Text style={styles.topmenutitle}>Opening</Text>
+                  <Text style={styles.topmenusubtitle}>Open/close times</Text>
+                </View>
+              </TouchableOpacity>
             </ScrollView>
-
-            <View style={styles.subheading}>
-              <Text style={styles.subtitle}>Jamaican Dishes</Text>
-              <Text
-                style={styles.subviewall}
-                onPress={() =>
-                  Fn_navigate(
-                    "Jamaican Dishes",
-                    require("../assets/jadish.jpg")
-                  )
-                }
-              >
-                ShowAll
-              </Text>
-            </View>
-
-            <FlatList
-              style={styles.forlist}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={dishdata1.data}
-              keyExtractor={(item) => item.Dishid}
-              renderItem={({ item }) => {
-                return (
-                  <Homedishcards
-                    dname={item.Dish}
-                    dprice={item.Price}
-                    dtype={item.DishType}
-                    dimg={item.DishImage}
-                    dtime={item.PreparationTime}
-                    ds={item.Description}
-                    dstatus={item.DishStatus}
-                    dincart={item.Incart}
-                    dishinfofn={openbottomsheet}
-                    dish_navigation={navigation}
-                    dish_dishid={item.Dishid}
-                  />
-                );
-              }}
-            />
-
-            <View style={styles.subheading}>
-              <Text style={styles.subtitle}>Chinese Dishies</Text>
-              <Text
-                style={styles.subviewall}
-                onPress={() =>
-                  Fn_navigate("Chinese Food", require("../assets/chdish.jpg"))
-                }
-              >
-                ShowAll
-              </Text>
-            </View>
-
-            <FlatList
-              style={styles.forlist}
-              horizontal={true}
-              data={dishdata2.data}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => {
-                return (
-                  <Homedishcards
-                    dname={item.Dish}
-                    dprice={item.Price}
-                    dtype={item.DishType}
-                    dimg={item.DishImage}
-                    dtime={item.PreparationTime}
-                    ds={item.Description}
-                    dstatus={item.DishStatus}
-                    dincart={item.Incart}
-                    dishinfofn={openbottomsheet}
-                    dish_navigation={navigation}
-                    dish_dishid={item.Dishid}
-                  />
-                );
-              }}
-            />
+            {screen === "menu" ? (
+              <View style={styles.allviews}>
+                <Homelist
+                  navigation={navigation}
+                  dishdata={dishdata}
+                  openbottomsheet={openbottomsheet}
+                  title={"Jamaican Dishes"}
+                  datasource={"j"}
+                  img={require("../assets/jadish.jpg")}
+                  query={"Jamaican Dishes"}
+                />
+                <Homelist
+                  navigation={navigation}
+                  dishdata={dishdata}
+                  openbottomsheet={openbottomsheet}
+                  title={"Chinese Dishes"}
+                  datasource={"c"}
+                  img={require("../assets/chdish.jpg")}
+                  query={"Chinese Food"}
+                />
+                <Homelist
+                  navigation={navigation}
+                  dishdata={dishdata}
+                  openbottomsheet={openbottomsheet}
+                  title={"Sea Dishes"}
+                  datasource={"s"}
+                  img={require("../assets/sdish.jpg")}
+                  query={"Sea Food"}
+                />
+              </View>
+            ) : screen === "deals" ? (
+              <Dealsscreen />
+            ) : screen === "opening" ? (
+              <Openingtimes />
+            ) : null}
           </ScrollView>
         )}
 
@@ -468,6 +377,9 @@ export default function Homescreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  allviews: {
+    flex: 1,
+  },
   menuhold: {
     backgroundColor: "#F47A00",
     height: 100,
@@ -617,8 +529,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     alignItems: "center",
     flexDirection: "row",
-    marginBottom: 14,
-    //marginTop:14,
+    //  marginBottom: 14,
+    marginTop: 14,
     //height: 180,
     paddingVertical: 10,
     borderRadius: 6,
@@ -653,7 +565,7 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     marginLeft: 10,
     // fontWeight:"bold",
     fontFamily: "Inter-Bold",
@@ -663,18 +575,46 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#F47A00",
     marginRight: 10,
-    fontFamily: "Inter-Regular",
+    fontFamily: "Inter-Bold",
   },
 
   // menuscroll ===================================
   menuscroll: {
-    // backgroundColor:"red",
-    marginLeft: -4,
+    backgroundColor: "#F47A00",
+    // marginTop: 14,
+    marginHorizontal: 10,
+    borderRadius: 6,
   },
 
   forlist: {
     marginLeft: -4,
     //height:254,
     //backgroundColor:"red"
+  },
+
+  menuoptions: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderLeftWidth: 0.5,
+    borderLeftColor: "white",
+    // marginLeft: 14,
+    // backgroundColor: "white",
+  },
+  iconstyle: {
+    marginRight: 2,
+  },
+
+  topmenutitle: {
+    fontSize: 12,
+    fontFamily: "Inter-Bold",
+    color: "white",
+  },
+  topmenusubtitle: {
+    fontSize: 10,
+    fontFamily: "Inter-Regular",
+    color: "white",
   },
 });

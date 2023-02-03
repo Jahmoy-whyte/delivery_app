@@ -28,7 +28,6 @@ import Addressscreen from "./screens/Addressscreen";
 import Resetpassword from "./screens/Resetpassword";
 import AddressInfoscreen from "./screens/AddressInfoscreen";
 import Favoritescreen from "./screens/Favoritescreen";
-import Closedscreen from "./screens/Closedscreen";
 
 let i = 1;
 function App() {
@@ -115,10 +114,6 @@ function App() {
                     component={AddressInfoscreen}
                   />
                   <Stack.Screen name="favorite" component={Favoritescreen} />
-                </Stack.Group>
-              ) : userscreenstate === "closed" ? (
-                <Stack.Group>
-                  <Stack.Screen name="closed" component={Closedscreen} />
                 </Stack.Group>
               ) : (
                 <Stack.Group>
