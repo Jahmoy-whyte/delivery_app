@@ -48,8 +48,8 @@ export const useGetuserinfo = (autorun) => {
           lname: docSnap.data().LastName,
           phone: docSnap.data().PhoneNumber,
           address: docSnap.data().Address,
-          favorite: docSnap.data().Favorite,
           role: docSnap.data().Role,
+          favorite: docSnap.data().Favorite,
         };
         let data2 = docSnap.data().Cartitems;
         setuserdata((prev) => ({

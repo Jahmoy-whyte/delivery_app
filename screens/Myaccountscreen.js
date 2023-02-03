@@ -62,8 +62,8 @@ const Myaccountscreen = ({ navigation }) => {
         lname: boxtxt.lname.trim(),
         phone: boxtxt.phone.trim(),
         address: userinfo.address,
-        favorite: userinfo.favorite,
         role: userinfo.role,
+        favorite: userinfo.favorite,
       };
       setuserinfo(userdata);
 

@@ -224,8 +224,8 @@ const Paymentscreen = ({ route, navigation }) => {
           lname: docSnap.data().LastName,
           phone: docSnap.data().PhoneNumber,
           address: docSnap.data().Address,
-          favorite: docSnap.data().Favorite,
           role: docSnap.data().Role,
+          favorite: docSnap.data().Favorite,
         };
 
         newarr = docSnap.data().Cartitems;
